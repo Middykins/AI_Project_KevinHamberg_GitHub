@@ -4,11 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.VisualScripting;
+using Day02_AStar.Grid;
 
 namespace Day02_AStar.Agents
 {
     public class AgentMover : MonoBehaviour
     {
+        public enum AgentState
+        {
+            Idle,
+            Moving,
+            ResetMovement,
+            SetTarget
+        }
+
         public Pathfinder pathfinder;
         public float moveSpeed = 2f;
 
@@ -16,8 +25,16 @@ namespace Day02_AStar.Agents
 
         private InputAction followAction;
 
+        private float timer;
+
+        [SerializeField] private AgentState currentState;
+
+        [SerializeField] private GameObject ownBase;
+        [SerializeField] private GameObject unitTarget;
+
         private void OnEnable()
         {
+            currentState = AgentState.Idle;
             followAction = new InputAction(
                 name: "FollowPath",
                 type: InputActionType.Button,
@@ -26,6 +43,19 @@ namespace Day02_AStar.Agents
 
             followAction.performed += OnFollowPerformed;
             followAction.Enable();
+
+            
+
+            if (this.gameObject.tag == "Team 1 Worker")
+            {
+                ownBase = GameObject.FindGameObjectWithTag("Team 1 Base");
+                unitTarget = GameObject.FindGameObjectWithTag("Team 1 Resource");
+            }
+            else if (this.gameObject.tag == "Team 2 Worker")
+            {
+                ownBase = GameObject.FindGameObjectWithTag("Team 2 Base");
+                unitTarget = GameObject.FindGameObjectWithTag("Team 2 Resource");
+            }
         }
 
         private void OnDisable()
@@ -58,7 +88,7 @@ namespace Day02_AStar.Agents
             }
 
             Node startNode = grid.GetNodeFromWorldPosition(transform.position);
-            Node goalNode = grid.GetNodeFromWorldPosition(pathfinder.goalMarker.position);
+            Node goalNode = grid.GetNodeFromWorldPosition(pathfinder.goalMarker.transform.position);
 
             if (startNode == null || goalNode == null)
             {
@@ -108,6 +138,54 @@ namespace Day02_AStar.Agents
             }
 
             moveRoutine = null;
+        }
+
+        private void Update()
+        {
+            if (moveRoutine == null || currentState == AgentState.ResetMovement)
+            {
+                timer += Time.deltaTime;
+                currentState = AgentState.Idle;
+                if (Vector3.Distance(this.transform.position, pathfinder.GetGoal().transform.position) > 2 && timer > 1.0f)
+                {
+                    StartFollowPath();
+                    currentState = AgentState.Moving;
+                    timer = 0.0f;
+                }
+            }
+
+            if (Vector3.Distance(this.transform.position, pathfinder.goalMarker.transform.position) < 2f)
+            {
+                currentState = AgentState.SetTarget;
+            }
+
+            if(currentState == AgentState.SetTarget)
+            {
+                if (this.tag == "Team 1 Worker" || this.tag == "Team 2 Worker")
+                {
+                    if (Vector3.Distance(this.transform.position, ownBase.transform.position) < 2f)
+                    {
+                        pathfinder.SetTarget(unitTarget);
+                        currentState = AgentState.ResetMovement;
+                    }
+                    else if (Vector3.Distance(this.transform.position, unitTarget.transform.position) < 2f)
+                    {
+                        pathfinder.SetTarget(ownBase);
+                        currentState = AgentState.ResetMovement;
+                    }
+                }
+                
+            }
+        }
+
+        public AgentState GetAgentState()
+        {
+            return currentState;
+        }
+
+        public void SetAgentState(AgentState state)
+        {
+            currentState = state;
         }
     }
 }

@@ -2,16 +2,19 @@ using Day02_AStar.Grid;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading;
+using Day02_AStar.Agents;
 
 namespace Day02_AStar.Pathfinding
 {
     public class Pathfinder : MonoBehaviour
     {
         public GridManager gridManager;
+        public AgentMover agentMover;
 
         [Header("Start & Goal")]
         public Transform startMarker;
-        public Transform goalMarker;
+        public GameObject goalMarker;
 
         [Header("Materials")]
         public Material pathMaterial;
@@ -22,6 +25,25 @@ namespace Day02_AStar.Pathfinding
 
         private InputAction pathfindAction;
 
+        private Transform lastPos;
+        private float timer;
+
+        private void Awake()
+        {
+            gridManager = GameObject.FindGameObjectWithTag("GridManager").GetComponent<GridManager>();
+            agentMover = gameObject.GetComponent<AgentMover>();
+
+            if (this.gameObject.tag == "Team 1 Soldier")
+            {
+                goalMarker = GameObject.FindGameObjectWithTag("Team 1 Marker");
+            }
+            else if (this.gameObject.tag == "Team 2 Soldier")
+            {
+                goalMarker = GameObject.FindGameObjectWithTag("Team 2 Marker");
+            }
+            lastPos = goalMarker.transform;
+        }
+
         private void RunPathfinding()
         {
             if (gridManager == null || startMarker == null || goalMarker == null)
@@ -31,7 +53,7 @@ namespace Day02_AStar.Pathfinding
             }
 
             Node startNode = gridManager.GetNodeFromWorldPosition(startMarker.position);
-            Node goalNode = gridManager.GetNodeFromWorldPosition(goalMarker.position);
+            Node goalNode = gridManager.GetNodeFromWorldPosition(goalMarker.transform.position);
 
             if (startNode == null || goalNode == null)
             {
@@ -221,6 +243,32 @@ namespace Day02_AStar.Pathfinding
         private void OnPathfindPerformed(InputAction.CallbackContext ctx)
         {
             RunPathfinding();
+        }
+
+        private void Update()
+        {
+            timer += Time.deltaTime;
+            if (timer > 1f)
+            {
+                if (goalMarker.transform.position != lastPos.position)
+                {
+                    RunPathfinding();
+                    agentMover.SetAgentState(AgentMover.AgentState.ResetMovement);
+                }
+                lastPos.position = goalMarker.transform.position;
+                timer = 0f;
+            }
+            
+        }
+
+        public GameObject GetGoal()
+        {
+            return goalMarker;
+        }
+
+        public void SetTarget(GameObject target)
+        {
+            goalMarker = target;
         }
     }
 }

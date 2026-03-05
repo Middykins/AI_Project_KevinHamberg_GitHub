@@ -2,8 +2,19 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
-  tags: []
+  serializedVersion: 3
+  tags:
+  - Team 1 Base
+  - Team 2 Base
+  - Team 1 Worker
+  - Team 2 Worker
+  - Team 1 Soldier
+  - Team 2 Soldier
+  - Team 1 Marker
+  - Team 2 Marker
+  - Team 1 Resource
+  - Team 2 Resource
+  - GridManager
   layers:
   - Default
   - TransparentFX
@@ -50,27 +61,3 @@ TagManager:
   - Light Layer 5
   - Light Layer 6
   - Light Layer 7
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 

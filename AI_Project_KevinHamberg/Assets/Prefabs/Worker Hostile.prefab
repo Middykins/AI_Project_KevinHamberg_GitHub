@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1109505326874330909}
   - component: {fileID: 7585251682713052965}
   - component: {fileID: 3550701734048914992}
+  - component: {fileID: 1237900180729191527}
   m_Layer: 0
   m_Name: Hostile Worker
   m_TagString: Team 2 Worker
@@ -181,6 +182,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &1237900180729191527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3825080674784694608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1034b4f348dda1b41bb8599c0bf913a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Worker
+  carry: 0
 --- !u!1 &7026825631706643764
 GameObject:
   m_ObjectHideFlags: 0

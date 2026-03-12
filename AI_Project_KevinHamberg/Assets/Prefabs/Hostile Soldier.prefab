@@ -129,6 +129,8 @@ GameObject:
   - component: {fileID: 2690600760676087852}
   - component: {fileID: 3428582734924647007}
   - component: {fileID: 7783703697722572785}
+  - component: {fileID: -7735924431668013961}
+  - component: {fileID: -3083822978499895586}
   m_Layer: 0
   m_Name: Hostile Soldier
   m_TagString: Team 2 Soldier
@@ -295,6 +297,39 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
+--- !u!114 &-7735924431668013961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8039081036337373069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e4cc1a4a9f225a46a3a242449605853, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Soldier
+--- !u!135 &-3083822978499895586
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8039081036337373069}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8797287318399891803
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,8 @@ public class BaseScript : MonoBehaviour
     [SerializeField] private GameObject Worker;
     [SerializeField] private GameObject Soldier;
 
+    public GOAPAgent agent;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,11 +36,24 @@ public class BaseScript : MonoBehaviour
         }
     }
 
+    public int GetResource()
+    {
+        return resourceAvailable;
+    }
+
     public void SpawnWorker()
     {
         if (resourceAvailable >= 5)
         {
-            Instantiate(Worker);
+            if(this.tag == "Team 2 Base")
+            {
+                agent.workers.Add(Instantiate(Worker));
+            }
+            else
+            {
+                Instantiate(Worker);
+            }
+            
             resourceAvailable -= 5;
         }
     }
@@ -47,7 +62,18 @@ public class BaseScript : MonoBehaviour
     {
         if (resourceAvailable >= 5)
         {
-            Instantiate(Soldier);
+            if(this.tag == "Team 2 Base")
+            {
+                agent.soldiers.Add(Instantiate(Soldier));
+            }
+            else if(this.tag == "Team 1 Base")
+            {
+                agent.humanSoldiers.Add(Instantiate(Soldier));
+            }
+            else
+            {
+                Instantiate(Soldier);
+            }
             resourceAvailable -= 5;
         }
     }
